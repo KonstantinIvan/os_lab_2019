@@ -12,24 +12,13 @@
 #include <sys/types.h>
 
 #include <pthread.h>
+#include "MultModulo.h" 
 
 struct FactorialArgs {
     uint64_t begin;
     uint64_t end;
     uint64_t mod;
 };
-
-uint64_t MultModulo(uint64_t a, uint64_t b, uint64_t mod) {
-    uint64_t result = 0;
-    a = a % mod;
-    while (b > 0) {
-        if (b % 2 == 1)
-            result = (result + a) % mod;
-        a = (a * 2) % mod;
-        b /= 2;
-    }
-    return result % mod;
-}
 
 void *ThreadFactorial(void *args) {
     struct FactorialArgs *fargs = (struct FactorialArgs *)args;
@@ -44,10 +33,20 @@ uint64_t compute_factorial(uint64_t begin, uint64_t end, uint64_t mod, int tnum)
     pthread_t threads[tnum];
     struct FactorialArgs args[tnum];
 
+    if (tnum > (end - begin)){
+        tnum = (end - begin);
+    }
+
     for (int i = 0; i < tnum; i++) {
-        args[i].begin = begin + i * (end - begin) / tnum;
+        args[i].begin = 1 + begin + i * (end - begin) / tnum;
         args[i].end = begin + (i + 1) * (end - begin) / tnum;
         args[i].mod = mod;
+
+        if (i == 0){
+            args[i].begin = args[i].begin - 1;
+        }
+
+        printf("args[i].begin=%lu, args[i].end=%lu, args[i].mod=%lu\n", args[i].begin, args[i].end, args[i].mod);
 
         if (pthread_create(&threads[i], NULL, ThreadFactorial, (void *)&args[i])) {
             printf("Error: pthread_create failed!\n");
@@ -59,6 +58,7 @@ uint64_t compute_factorial(uint64_t begin, uint64_t end, uint64_t mod, int tnum)
     for (int i = 0; i < tnum; i++) {
         uint64_t result;
         pthread_join(threads[i], (void **)&result);
+        printf("Result = %lu\n", result);
         total = MultModulo(total, result, mod);
     }
 
