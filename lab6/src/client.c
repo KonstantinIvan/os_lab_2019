@@ -12,6 +12,8 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 
+#include <pthread.h>
+
 struct Server {
   char ip[255];
   int port;
@@ -69,14 +71,11 @@ int main(int argc, char **argv) {
       switch (option_index) {
       case 0:
         ConvertStringToUI64(optarg, &k);
-        // TODO: your code here
         break;
       case 1:
         ConvertStringToUI64(optarg, &mod);
-        // TODO: your code here
         break;
       case 2:
-        // TODO: your code here
         memcpy(servers, optarg, strlen(optarg));
         break;
       default:

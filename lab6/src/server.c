@@ -11,8 +11,6 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 
-#include "pthread.h"
-
 struct FactorialArgs {
   uint64_t begin;
   uint64_t end;
