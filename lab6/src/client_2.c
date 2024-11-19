@@ -188,7 +188,7 @@ int main(int argc, char **argv) {
     for (int i = 0; i < server_count; i++) {
         uint64_t result;
         pthread_join(threads[i], (void **)&result);
-        printf("Result = %lu\n", result);
+        //printf("Result = %lu\n", result);
         answer = MultModulo(answer, result, mod);
     }
     printf("answer: %lu\n", answer);

@@ -46,7 +46,7 @@ uint64_t compute_factorial(uint64_t begin, uint64_t end, uint64_t mod, int tnum)
             args[i].begin = args[i].begin - 1;
         }
 
-        printf("args[i].begin=%lu, args[i].end=%lu, args[i].mod=%lu\n", args[i].begin, args[i].end, args[i].mod);
+        //ёprintf("args[i].begin=%lu, args[i].end=%lu, args[i].mod=%lu\n", args[i].begin, args[i].end, args[i].mod);
 
         if (pthread_create(&threads[i], NULL, ThreadFactorial, (void *)&args[i])) {
             printf("Error: pthread_create failed!\n");
@@ -58,7 +58,7 @@ uint64_t compute_factorial(uint64_t begin, uint64_t end, uint64_t mod, int tnum)
     for (int i = 0; i < tnum; i++) {
         uint64_t result;
         pthread_join(threads[i], (void **)&result);
-        printf("Result = %lu\n", result);
+        //printf("Result = %lu\n", result);
         total = MultModulo(total, result, mod);
     }
 
@@ -167,7 +167,7 @@ int main(int argc, char **argv) {
 
             uint64_t result = compute_factorial(begin, end, mod, tnum);
 
-            printf("Result = %lu\n", result);
+            //printf("Result = %lu\n", result);
 
             char buffer[sizeof(result)];
             memcpy(buffer, &result, sizeof(result));
